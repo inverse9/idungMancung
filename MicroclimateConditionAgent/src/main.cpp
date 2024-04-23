@@ -1,6 +1,7 @@
 
 
 #include <WiFi.h>
+#include.secret
 
 const char* ssid = "Wokwi-GUEST";       // Your WiFi SSID
 const char* password = ""; // Your
