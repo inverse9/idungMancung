@@ -1,7 +1,6 @@
 #include <WiFi.h>
+#include <secret.h>
 
-const char* ssid = "Wokwi-GUEST";       // Your WiFi SSID
-const char* password = ""; // Your
 
 void setup() {
   Serial.begin(115200);
