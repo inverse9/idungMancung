@@ -21,8 +21,8 @@ void setup() {
   urusanWiFi.konek();
   urusanIoT.konek();
   urusanIoT.penangkapPesan(penangkapPesan);
-  urusanIoT.subscribe("tld/namaorganisasi/namadivisi");
-
+  urusanIoT.subscribe("org/IdungMancung/MicroclimateConditonAgent");
+ 
   penjadwal.init();
   penjadwal.addTask(task1);
   task1.enable();
