@@ -6,7 +6,7 @@ void setup() {
 
   // Connect to WiFi
   Serial.printf("Connecting to %s\n", ssid);
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, pass);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
