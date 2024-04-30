@@ -1,30 +1,54 @@
+#include <Arduino.h>
+#include <MQTT.h>
+#include <UrusanWiFi.h>
+#include <UrusanIoT.h>
+#include "secret.h"
+#include <TaskScheduler.h>
 
+void penangkapPesan(String topic, String message);
+void task1DetailTugas();
 
-#include <WiFi.h>
-#include.secret
+UrusanWiFi urusanWiFi(ssid, pass);
+UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
+Scheduler penjadwal;
 
-const char* ssid = "Wokwi-GUEST";       // Your WiFi SSID
-const char* password = ""; // Your
+Task task1(3000, TASK_FOREVER, &task1DetailTugas);
 
 void setup() {
+  // put your setup code here, to run once:
   Serial.begin(115200);
 
-  // Connect to WiFi
-  Serial.printf("Connecting to %s\n", ssid);
-  WiFi.begin(ssid, password);
+  urusanWiFi.konek();
+  urusanIoT.konek();
+  urusanIoT.penangkapPesan(penangkapPesan);
+  urusanIoT.subscribe("tld/namaorganisasi/namadivisi");
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-
-  // If successfully connected
-  Serial.println("\nWiFi connected");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+  penjadwal.init();
+  penjadwal.addTask(task1);
+  task1.enable();
 }
 
 void loop() {
-  // Your main code goes here
-  // Example: send sensor data, control actuators, etc.
+  // put your main code here, to run repeatedly:
+  urusanIoT.proses();
+
+  if(urusanWiFi.apakahKonek() == 1 && urusanIoT.apakahKonek() == 0){
+    urusanIoT.konek();
+  }
+
+  penjadwal.execute();
+}
+
+/// @brief Fungsi callback dari fungsi subscribe objek urusanIoT
+/// @param topic 
+/// @param message 
+void penangkapPesan(String topic, String message){
+  Serial.printf("penangkapPesan: topic: %s | message: %s\n", topic.c_str(), message.c_str());
+}
+
+/// @brief Fungsi callback dari task1
+void task1DetailTugas(){
+  if(urusanIoT.apakahKonek() == 1){
+    urusanIoT.publish("org/IdungMancung", "MicroclimateConditionAgent");
+  }
 }
