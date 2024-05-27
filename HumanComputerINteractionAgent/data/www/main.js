@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Buat instan client: alamat Broker, Port, Websocket Path, Client ID
   var klienIdUnik =
-    "gantinamaperusahaan.tld-gantinamadivisi-browser" + generateRandomString(5);
+    "gantiIdungMancung.org-HumanComputerInteractionAgent-browser" +
+    generateRandomString(5);
   client = new Paho.MQTT.Client(
     "broker.hivemq.com",
     Number(8000),
@@ -34,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Seluruh logika data masuk dan pembaruan antarmuka ada di sini
     // Penangan pesan MCA
-    if (message.destinationName == "namaperusahaan.tld/namadivisi1") {
+    if (
+      message.destinationName == "IdungMancung.org/MicroclimateConditionAgent"
+    ) {
       var data = JSON.parse(message.payloadString);
 
       var suhu = parseFloat(data.suhu).toFixed(2);
@@ -48,7 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Penangan Pesan MAA
-    if (message.destinationName == "namaperusahaan.tld/namadivisi2") {
+    if (
+      message.destinationName == "IdungMancung.org/MicroclimateAdjusterAgent"
+    ) {
       var data = JSON.parse(message.payloadString);
 
       var arah = parseInt(data.arah);
@@ -74,7 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Penangan Pesan FRA
-    if (message.destinationName == "namaperusahaan.tld/namadivisi3") {
+    if (
+      message.destinationName == "IdungMancung.org/FertigationReservoirAgent"
+    ) {
       var data = JSON.parse(message.payloadString);
       var level = parseFloat(data.level).toFixed(2);
 
@@ -82,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Penangan Pesan FPA
-    if (message.destinationName == "namaperusahaan.tld/namadivisi4") {
+    if (message.destinationName == "IdungMancung.org/FertigationPumpAgent") {
       var data = JSON.parse(message.payloadString);
 
       var status = data.status;
@@ -111,14 +118,14 @@ document.addEventListener("DOMContentLoaded", function () {
     statusKoneksi.classList.add("green");
     statusKoneksi.classList.remove("red");
     //Subscribe semua topic baris demi baris yang ingin didengarkan di sini.
-    client.subscribe("namaperusahaan.tld/namadivisi1"); // Ini MCA
-    client.subscribe("namaperusahaan.tld/namadivisi1/setelan"); // Ini setelan MCA
-    client.subscribe("namaperusahaan.tld/namadivisi2"); // Ini MAA
-    client.subscribe("namaperusahaan.tld/namadivisi2/setelan"); // Ini setelan MAA
-    client.subscribe("namaperusahaan.tld/namadivisi3"); // Ini FRA
-    client.subscribe("namaperusahaan.tld/namadivisi3/setelan"); // Ini setelan FRA
-    client.subscribe("namaperusahaan.tld/namadivisi4"); // Ini FPA
-    client.subscribe("namaperusahaan.tld/namadivisi4/setelan"); // Ini setelan FPA
+    client.subscribe("IdungMancung.org/MicroclimateConditionAgent"); // Ini MCA
+    client.subscribe("IdungMancung.org/MicroclimateConditionAgent/setelan"); // Ini setelan MCA
+    client.subscribe("IdungMancung.org/MicroclimateAdjusterAgent"); // Ini MAA
+    client.subscribe("IdungMancung.org/MicroclimateAdjusterAgent/setelan"); // Ini setelan MAA
+    client.subscribe("IdungMancung.org/FertigationReservoirAgent"); // Ini FRA
+    client.subscribe("IdungMancung.org/FertigationReservoirAgent/setelan"); // Ini setelan FRA
+    client.subscribe("IdungMancung.org/FertigationPumpAgent"); // Ini FPA
+    client.subscribe("IdungMancung.org/FertigationPumpAgent/setelan"); // Ini setelan FPA
     console.log("Tersambung!");
   }
 
@@ -157,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         perintah: "nyalakan",
       };
 
-      kirimPesan(perintah, "namaperusahaan.tld/namadivisi4/setelan");
+      kirimPesan(perintah, "IdungMancung.org/FertigationPumpAgent/setelan");
     });
 
   document
@@ -167,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         perintah: "padamkan",
       };
 
-      kirimPesan(perintah, "namaperusahaan.tld/namadivisi4/setelan");
+      kirimPesan(perintah, "IdungMancung.org/FertigationPumpAgent/setelan");
     });
 
   document
@@ -182,7 +189,10 @@ document.addEventListener("DOMContentLoaded", function () {
         kekuatan: divSliderKekuatanBlower.value,
       };
 
-      kirimPesan(perintah, "namaperusahaan.tld/namadivisi2/setelan");
+      kirimPesan(
+        perintah,
+        "IdungMancung.org/MicroclimateAdjusterAgent/setelan"
+      );
     });
 
   document
@@ -192,7 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
         perintah: "padamkan",
       };
 
-      kirimPesan(perintah, "namaperusahaan.tld/namadivisi2/setelan");
+      kirimPesan(
+        perintah,
+        "IdungMancung.org/MicroclimateAdjusterAgent/setelan"
+      );
     });
 
   document
@@ -205,6 +218,9 @@ document.addEventListener("DOMContentLoaded", function () {
         arah: divArahBlower.value,
       };
 
-      kirimPesan(perintah, "namaperusahaan.tld/namadivisi2/setelan");
+      kirimPesan(
+        perintah,
+        "IdungMancung.org/MicroclimateAdjusterAgent/setelan"
+      );
     });
 });

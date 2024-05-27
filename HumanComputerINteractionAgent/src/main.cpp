@@ -81,8 +81,6 @@ void penangkapPesan(String topic, String message){
   if(galatParseJson == DeserializationError::Ok){
     if(dataMasuk["perintah"] != nullptr){
       String perintah = dataMasuk["perintah"].as<String>();
-
-      
     }
 
     if(dataMasuk["suhu"] != nullptr && dataMasuk["kelembapan"] != nullptr){
@@ -91,6 +89,22 @@ void penangkapPesan(String topic, String message){
       urusanLayar.updateTemperatureAndHumidity(suhu, kelembapan);
     }
     
+    if(dataMasuk["kekuatan"] != nullptr && dataMasuk["status"] != nullptr){
+      int kekuatan = dataMasuk["kekuatan"].as<int>();
+      bool status = dataMasuk["status"].as<bool>();
+      urusanLayar.updateFanStatus(kekuatan,status);
+    }
+
+    if(dataMasuk["level"] != nullptr){
+      float level = dataMasuk["level"].as<float>();
+      urusanLayar.updateWaterReservoir(level);
+    }
+
+    if(dataMasuk["status"] != nullptr){
+      bool status = dataMasuk["status"].as<bool>();
+      urusanLayar.updatePumpStatus(status);
+    }
+
   }
   else{
     Serial.println("penangkapPesan: Format pesan tidak valid! Gunakan format JSON.");
@@ -111,19 +125,20 @@ void task1DetailTugas(){
 
 uint8_t nomorSlider = 1;
 uint8_t jumlahSlider = 4;
+
 void task2DetailTugas(){
-  if(nomorSlider == 1){
-    urusanLayar.updateTemperatureAndHumidity(29, 80);
-  }
-  else if(nomorSlider == 2){
-    urusanLayar.updateFanStatus(100, 1);
-  }
-  else if(nomorSlider == 3){
-    urusanLayar.updateWaterReservoir(80);
-  }
-  else if(nomorSlider == 4){
-    urusanLayar.updatePumpStatus(1);
-  }   
+  // if(nomorSlider == 1){
+  //   // urusanLayar.updateTemperatureAndHumidity(29, 80);
+  // }
+  // else if(nomorSlider == 2){
+  //   // urusanLayar.updateFanStatus(100, 1);
+  // }
+  // else if(nomorSlider == 3){
+  //   // urusanLayar.updateWaterReservoir(80);
+  // }
+  // else if(nomorSlider == 4){
+  //   // urusanLayar.updatePumpStatus(1);
+  // }   
 
 
   if(nomorSlider == jumlahSlider){
